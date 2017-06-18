@@ -1,0 +1,97 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+body{
+	background: #333;
+}
+
+#main{
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	border:1px; solid #eee;
+	width: 800px;
+	height: 447px;
+}
+.img1{
+	opacity: 0.6;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.img2{
+	position: absolute;
+	top: 0;
+	left: 0;
+	clip: rect(0px 200px 200px 0px);
+}
+#box{
+	width: 200px;
+	height: 200px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 2;
+	cursor: move;
+	border: 1px solid #fff;
+}
+.minbox{
+	width: 8px;
+	height:8px;
+	background-color: #fff;
+	position: absolute;
+	border-radius: 50%;
+}
+.left-top{
+	top:-4px;
+	left:-4px;
+	cursor: nw-resize;
+}
+.left{
+	top:50%;
+	left: -4px;
+	margin-top: -4px;
+	cursor: e-resize;
+}
+.top{
+	top:-4px;
+	left:50%;
+	margin-left: -4px;
+	cursor: n-resize;
+}
+.right-top{
+	top: -4px;
+	right: -4px;
+	cursor: ne-resize;
+}
+.right{
+	top:50%;
+	margin-top: -4px;
+	right:-4px;
+	cursor: e-resize;
+}
+.right-bottom{
+	bottom: -4px;
+	right:-4px;
+	cursor: se-resize;
+}
+.bottom{
+	bottom: -4px;
+	left:50%;
+	margin-left: -4px;
+	cursor: s-resize;
+}
+.left-bottom{
+	bottom: -4px;
+	left:-4px;
+	cursor: sw-resize;
+}
+
+
+
+
+
+
+

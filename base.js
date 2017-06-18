@@ -3,13 +3,20 @@ window.onload=function(){
     var box=document.getElementById("box");
     var mainbox=document.getElementById("mainbox");
     var left=document.getElementById("left");
+    var right=document.getElementById("right");
     var key=false;//鼠标按下状态
-    var contact = "";//表示被按下的触点
+    var content = "";//表示被按下的触点
 
     left.onmousedown=function(e){
         e.stopPropagation();
         key=true;
-        contact="left";
+        content="left";
+    }
+
+    right.onmousemove=function(e){
+        e.stopPropagation();
+        key=true;
+        content="right";
     }
 
     //鼠标松开事件
@@ -20,21 +27,33 @@ window.onload=function(){
     //鼠标移动事件
     window.onmousemove=function(e){
         if(key==true){
-            switch (contact){
+            switch (content){
                 case "left": leftmove(e);break;
+                case "right": rightmove(e);break;
+                
             }
         }
     }
 
     //leftmove
     function leftmove(e){
-        var x=e.clientX;
+        var x=e.clientX;//鼠标x
         var mainX = local(box).left;
         var addWidth = mainX-x; //增加的宽度
         var widthbefore=box.offsetWidth-2;//原来的宽度
         box.style.width= widthbefore+addWidth+"px";
         box.style.left=box.offsetLeft-addWidth+"px";
     }
+
+    //rightmove
+    function rightmove(e){
+        var x = e.clientX;
+        var addWidth = "";//鼠标移动后选取框增加的宽度
+        var widthbefore = box.offsetWidth - 2;//选取框变化前的宽度
+        addWidth = x - local(box).left - widthbefore ;//鼠标移动或增加的宽度
+        box.style.width = addWidth + widthbefore + "px";
+    }
+
     //获取元素相对于屏幕左边的距离
     function local(item){
         var left=item.offsetLeft;

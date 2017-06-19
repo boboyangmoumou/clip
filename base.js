@@ -1,5 +1,15 @@
 window.onload=function(){
     document.onselectstart=new Function('event.returnValue=false;');
+    //取消图片的默认事件
+    document.getElementById('img1').onmousedown = function(e){
+        e.preventDefault()
+    };
+    document.getElementById('img2').onmousedown = function(e){
+        e.preventDefault()
+    };
+    document.getElementById('img3').onmousedown = function(e){
+        e.preventDefault()
+    };
     var main=document.getElementById("main");
     var box=document.getElementById("box");
     var mainbox=document.getElementById("mainbox");
@@ -13,6 +23,23 @@ window.onload=function(){
     var rightBottom =document.getElementById("right-bottom");
     var key=false;//鼠标按下状态
     var content = "";//表示被按下的触点
+    var mouseOffsetX="";
+    var mouseOffsetY="";
+    var moveX=""; //元素新位置，先初始化
+    var moveY="";
+    box.onmousedown=function(e){
+        var e = e || window.event;
+        e.stopPropagation();
+        key=true;
+        content="MOVE";
+        var moveX=0; //元素新位置，先初始化
+        var moveY=0;
+        mouseOffsetX = e.clientX-box.offsetLeft;//鼠标位置
+        mouseOffsetY = e.clientY-box.offsetTop;
+        e.onselectstart = function(){//防止底层图片拖动
+            return false;
+        }
+    }
 
     left.onmousedown=function(e){
         e.stopPropagation();
@@ -63,7 +90,8 @@ window.onload=function(){
     }
 
     //鼠标松开事件
-    window.onmouseup = function(){
+    window.onmouseup = function(e){
+        e.stopPropagation();
         key= false;
     }
 
@@ -79,17 +107,55 @@ window.onload=function(){
                 case "left-bottom":leftMove(e); bottomMove(e);break;
                 case "right-top":rightMove(e); topMove(e);break;
                 case "right-bottom":rightMove(e); bottomMove(e);break;
+                case "MOVE": boxMove(e);break;
             }
         }
         choose();
         see();
     }
 
+    //boxmove拖拽
+    function boxMove(e){
+        var oWidth=main.offsetWidth-box.offsetWidth;
+        var oHeight=main.offsetHeight-box.offsetHeight;
+        console.log(main.offsetWidth);
+        var e = e || window.evnet;
+
+        var mouseX = e.clientX;//鼠标当前位置
+        var mouseY = e.clientY;
+
+
+        if(key===true){
+            moveX=mouseX-mouseOffsetX;
+            moveY=mouseY-mouseOffsetY;
+        }
+        if(moveX<0){
+            moveX=0;
+        }else if(moveX>oWidth){
+            moveX=oWidth;
+        }
+        if(moveY<0){
+            moveY=0;
+        }else if(moveY>oHeight){
+            moveY=oHeight;
+        }
+        box.style.left=moveX+ "px";
+        box.style.top=moveY+ "px";
+        if(e.stopPropagation){
+            e.stopPropagation();
+        }
+        return false;
+    }
+
+
+
     //leftMove
     function leftMove(e){
         var x=e.clientX;//鼠标x
         if(x<local(main).left){
             x=local(main).left;
+        }else if(x>(local(main).left+main.offsetWidth-2)){
+            x=local(main).left+main.offsetWidth-2
         }
         var mainX = local(box).left;
         var addWidth = mainX-x; //增加的宽度
@@ -104,6 +170,8 @@ window.onload=function(){
         var x = e.clientX;
         if(x>(local(main).left+main.offsetWidth-2)){
             x=local(main).left+main.offsetWidth-2;
+        }else if(x<local(main).left){
+            x=local(main).left;
         }
         var addWidth = "";//鼠标移动后选取框增加的宽度
         var widthbefore = box.offsetWidth - 2;//选取框变化前的宽度
@@ -118,6 +186,8 @@ window.onload=function(){
         var y=e.clientY;
         if(y<local(main).top){
             y=local(main).top;
+        }else if(y>(main.offsetHeight+local(main).top-2)){
+            y=(main.offsetHeight+local(main).top-2)
         }
         var Heightbefore=box.offsetHeight-2;//选取框之前的高度
         var mainY=local(box).top;
@@ -133,6 +203,8 @@ window.onload=function(){
         var y=e.clientY;
         if(y>(main.offsetHeight+local(main).top-2)){
             y=main.offsetHeight+local(main).top-2;
+        }else if(y<local(main).top){
+            y=local(main).top;
         }
         var Heightbefore=box.offsetHeight-2;//选框之前的高度
         var mainY=local(box).top;

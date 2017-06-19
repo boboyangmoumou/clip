@@ -89,6 +89,21 @@ body{
 	cursor: sw-resize;
 }
 
+/*view*/
+	#view{
+		position: absolute;
+		top: 100px;
+		right:0px;
+		width: 800px;
+		height: 477px;
+	}
+	#img3{
+		position: absolute;
+		top:0;
+		left: 0;
+		clip: rect(0px,200px,200px,0px);
+	}
+
 
 
 
